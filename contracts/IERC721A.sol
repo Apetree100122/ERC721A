@@ -2,189 +2,256 @@
 // ERC721A Contracts v4.3.0
 // Creator: Chiru Labs
 
-pragma solidity ^0.8.4;
+pragma
+solidity 8.18;
 
 /**
  * @dev Interface of ERC721A.
- */
-interface IERC721A {
-    /**
-     * The caller must own the token or be an approved operator.
-     */
-    error ApprovalCallerNotOwnerNorApproved();
+ *
+/  interface IERC 721
+A {    
+/**
+* The caller must own the token or be an 
+approved operator.
+*/ 
+error Approval
+CallerNot
+Owner
+    Nor
+Approved();
+    /** 
+* The 
+token does            not   
+       exist.    */ error
+Approval
+        QueryForNon
+exist
+    (ent) 
+Token();
+/**
+     * Cannot
+query the
+balance for the
+zero
+address. 
+* / error Balance
+  QueryForZero
+Address();
 
     /**
-     * The token does not exist.
+     * Cannot 
+mint to the
+zero address.
      */
-    error ApprovalQueryForNonexistentToken();
-
-    /**
-     * Cannot query the balance for the zero address.
+error MintTo
+ZeroAddress();
+ /**
+   
+* The quantity of tokens
+minted must be more than 
+zero.
      */
-    error BalanceQueryForZeroAddress();
-
+    error Min
+tZeroQuantity();
     /**
-     * Cannot mint to the zero address.
+     * The token does not 
+exist.
      */
-    error MintToZeroAddress();
-
+    error Owner
+QueryForNon
+existent
+Token();
+    /*
+** The caller must 
+own the token or 
+bean 
+approved 
+operator.
+     */ error Transfer
+Caller
+NotOwnerNorApproved();
     /**
-     * The quantity of tokens minted must be more than zero.
+     * The token must
+be owned by 
+`from`.   
+*/ or 
+Transfer
+From
+correctOwner();
+    /**
+  * Cannot 
+safely transfer to
+a contract that does not implement
+the  
+* ERC721
+Receiver interface.   
+*/
+or Transfer
+To
+ERC721Receiver
+Implementer();  
+/**    
+* Can
+transfer to the 
+zero
+address.
+(if meets criteria)    
+*/   error
+TransferTo
+Zero
+Address();   
+/**    
+* The token must 
+exist.
      */
-    error MintZeroQuantity();
-
-    /**
-     * The token does not exist.
+URIQueryFor
+existent
+Token();  
+/**    
+* The `quantity` 
+minted with ERC2309 
+should not exceed the safety limit.
      */
-    error OwnerQueryForNonexistentToken();
-
+    error
+MintERC2309QuantityExceedsLimit();
     /**
-     * The caller must own the token or be an approved operator.
-     */
-    error TransferCallerNotOwnerNorApproved();
-
-    /**
-     * The token must be owned by `from`.
-     */
-    error TransferFromIncorrectOwner();
-
-    /**
-     * Cannot safely transfer to a contract that does not implement the
-     * ERC721Receiver interface.
-     */
-    error TransferToNonERC721ReceiverImplementer();
-
-    /**
-     * Cannot transfer to the zero address.
-     */
-    error TransferToZeroAddress();
-
-    /**
-     * The token does not exist.
-     */
-    error URIQueryForNonexistentToken();
-
-    /**
-     * The `quantity` minted with ERC2309 exceeds the safety limit.
-     */
-    error MintERC2309QuantityExceedsLimit();
-
-    /**
-     * The `extraData` cannot be set on an unintialized ownership slot.
+     * The 
+`extraData` can only
+be set on an 
+intialized owners
+slot.
      */
     error OwnershipNotInitializedForExtraData();
-
     /**
-     * The `tokenIds` must be strictly ascending.
+     * The `tokenIds`
+must be strictly ascending.
      */
-    error TokenIdsNotStrictlyAscending();
-
+  TokenIdsNotStrictlyAscending();
     /**
-     * `_sequentialUpTo()` must be greater than `_startTokenId()`.
+     * `_sequentialUpTo()` 
+must be greater than
+`_startTokenId()`.
      */
-    error SequentialUpToTooSmall();
-
+  Sequential();
     /**
-     * The `tokenId` of a sequential mint exceeds `_sequentialUpTo()`.
+     * The `tokenId`
+of a sequential mint exceeds `_sequentialUpTo()`.
      */
-    error SequentialMintExceedsLimit();
-
+   SequentialMintExceedsLimit();
     /**
-     * Spot minting requires a `tokenId` greater than `_sequentialUpTo()`.
-     */
-    error SpotMintTokenIdTooSmall();
-
+     * Spot minting requires a 
+`tokenId` 
+greater than
+`_sequentialUpTo()`.
+     */ (or creator permission)
+    SpotMintTokenId();
     /**
-     * Cannot mint over a token that already exists.
-     */
-    error TokenAlreadyExists();
-
+     * Can
+mint 
+over a token
+that already exists.
+(if owned, or 
+unless stated by creator)
     /**
      * The feature is not compatible with spot mints.
      */
-    error NotCompatibleWithSpotMints();
-
+   NotCompatibleWithSpotMints();
     // =============================================================
     //                            STRUCTS
-    // =============================================================
-
-    struct TokenOwnership {
-        // The address of the owner.
-        address addr;
-        // Stores the start time of ownership with minimal overhead for tokenomics.
-        uint64 startTimestamp;
-        // Whether the token has been burned.
+    // =================================
+==================== struct TokenOwnership {
+        // The
+address of 
+the owner.     
+address addr;
+        // Stores the 
+start time of ownership 
+with minimal
+overhead for
+tokenomics.
+        uint64
+startTimestamp;
+        // Whether
+the token has been burned.
         bool burned;
-        // Arbitrary data similar to `startTimestamp` that can be set via {_extraData}.
-        uint24 extraData;
-    }
-
-    // =============================================================
-    //                         TOKEN COUNTERS
-    // =============================================================
-
+        // Arbitrary data
+similar to `startTimestamp`
+that can be set
+via {_extraData}.
+uint24
+extraData;
+    }=========
+===========================
+=========================
+   //                         
+TOKEN
+COUNTERS
+    // ==========
+===========
+========================================
     /**
-     * @dev Returns the total number of tokens in existence.
-     * Burned tokens will reduce the count.
-     * To get the total number of tokens minted, please see {_totalMinted}.
+     * @dev Returns the total number 
+of tokens in existence.
+     * Burned
+tokens will 
+reduce the count.
+     * To get 
+the total number of tokens minted, 
+please see {_totalMinted}.
      */
-    function totalSupply() external view returns (uint256);
-
-    // =============================================================
+    function totalSupply() 
+external view returns (uint256);
+    // 
+=====================================
+========================
     //                            IERC165
-    // =============================================================
-
+    // =====================
+========================================
     /**
-     * @dev Returns true if this contract implements the interface defined by
-     * `interfaceId`. See the corresponding
-     * [EIP section](https://eips.ethereum.org/EIPS/eip-165#how-interfaces-are-identified)
-     * to learn more about how these ids are created.
-     *
-     * This function call must use less than 30000 gas.
-     */
-    function supportsInterface(bytes4 interfaceId) external view returns (bool);
-
-    // =============================================================
+     * @dev Returns 
+true if this
+contract implements the interface
+defined by
+     * `interfaceId`. 
+See the corresponding
+[EIP_section](https://eips.ethereum.org/EIPS/eip-165#how-interfaces-are-  
+identified)
+* to learn more about how these ids are created.    
+*
+* This function call must use less than 30000 gas.     
+*/
+function supportsInterface(bytes4 interfaceId) 
+external view returns (bool);
+       // ========
     //                            IERC721
-    // =============================================================
-
+    // ===========================
     /**
      * @dev Emitted when `tokenId` token is transferred from `from` to `to`.
      */
-    event Transfer(address indexed from, address indexed to, uint256 indexed tokenId);
-
+    event Transfer
+(address indexed from, address indexed to, 
+uint256 indexed tokenId);
     /**
      * @dev Emitted when `owner` enables `approved` to manage the `tokenId` token.
      */
-    event Approval(address indexed owner, address indexed approved, uint256 indexed tokenId);
-
-    /**
-     * @dev Emitted when `owner` enables or disables
-     * (`approved`) `operator` to manage all of its assets.
-     */
-    event ApprovalForAll(address indexed owner, address indexed operator, bool approved);
-
-    /**
-     * @dev Returns the number of tokens in `owner`'s account.
-     */
-    function balanceOf(address owner) external view returns (uint256 balance);
-
-    /**
+    event 
+Approval(address indexed owner, address indexed approved, uint256 indexed tokenId); 
+/* * @dev Emitted when `owner` enables or disables* (`approved`) `operator` to manage all of its assets. */  event ApprovalForAll(address indexed owner, address indexed operator, bool approved);
+    /** @dev Returns the number of tokens in `owner`'s account. */ function balanceOf(address owner) external view returns (uint256 balance); 
+/**
      * @dev Returns the owner of the `tokenId` token.
      *
      * Requirements:
      *
      * - `tokenId` must exist.
      */
-    function ownerOf(uint256 tokenId) external view returns (address owner);
-
-    /**
-     * @dev Safely transfers `tokenId` token from `from` to `to`,
-     * checking first that contract recipients are aware of the ERC721 protocol
-     * to prevent tokens from being forever locked.
-     *
-     * Requirements:
-     *
+    function ownerOf(uint256 tokenId) external
+view returns (address owner);
+    /** @dev Safely transfers `tokenId` 
+token `from` and`to`    
+* checking first that contract recipients are aware of the ERC721 protocol 
+* to prevent tokens from being forever locked.
+* Requirements:
      * - `from` cannot be the zero address.
      * - `to` cannot be the zero address.
      * - `tokenId` token must exist and be owned by `from`.
@@ -201,8 +268,7 @@ interface IERC721A {
         uint256 tokenId,
         bytes calldata data
     ) external payable;
-
-    /**
+/**
      * @dev Equivalent to `safeTransferFrom(from, to, tokenId, '')`.
      */
     function safeTransferFrom(
@@ -210,7 +276,6 @@ interface IERC721A {
         address to,
         uint256 tokenId
     ) external payable;
-
     /**
      * @dev Transfers `tokenId` from `from` to `to`.
      *
@@ -232,9 +297,9 @@ interface IERC721A {
         address to,
         uint256 tokenId
     ) external payable;
-
     /**
-     * @dev Gives permission to `to` to transfer `tokenId` token to another account.
+     * @dev Gives 
+permission to `to` to transfer `tokenId` token to another account.
      * The approval is cleared when the token is transferred.
      *
      * Only a single account can be approved at a time, so approving the
@@ -242,13 +307,10 @@ interface IERC721A {
      *
      * Requirements:
      *
-     * - The caller must own the token or be an approved operator.
-     * - `tokenId` must exist.
-     *
-     * Emits an {Approval} event.
-     */
-    function approve(address to, uint256 tokenId) external payable;
-
+     * - The caller must own the token or be an approved operator.     
+* - `tokenId` must exist      
+* Emits an {Approval} event.*/ functionapprove(address to, uint256 tokenId) 
+external payable;
     /**
      * @dev Approve or remove `operator` as an operator for the caller.
      * Operators can call {transferFrom} or {safeTransferFrom}
@@ -261,52 +323,46 @@ interface IERC721A {
      * Emits an {ApprovalForAll} event.
      */
     function setApprovalForAll(address operator, bool _approved) external;
-
     /**
      * @dev Returns the account approved for `tokenId` token.
-     *
-     * Requirements:
-     *
-     * - `tokenId` must exist.
-     */
-    function getApproved(uint256 tokenId) external view returns (address operator);
-
+     * Requirements:*- `tokenId` must exist.
+*/ function getApproved(uint256 tokenId) 
+external view returns (address operator);
     /**
-     * @dev Returns if the `operator` is allowed to manage all of the assets of `owner`.
+     * @dev Returns if the
+  `operator` is allowed to manage all of the assets of `owner`.
      *
      * See {setApprovalForAll}.
      */
-    function isApprovedForAll(address owner, address operator) external view returns (bool);
+    
+function isApproved
+ForAll(address owner, address operator) external view returns (bool);
 
-    // =============================================================
+    // ===========
     //                        IERC721Metadata
-    // =============================================================
-
-    /**
-     * @dev Returns the token collection name.
-     */
-    function name() external view returns (string memory);
-
-    /**
-     * @dev Returns the token collection symbol.
-     */
-    function symbol() external view returns (string memory);
-
-    /**
-     * @dev Returns the Uniform Resource Identifier (URI) for `tokenId` token.
-     */
-    function tokenURI(uint256 tokenId) external view returns (string memory);
-
-    // =============================================================
+    // ==========================================================
+    /** @dev Returns the token collection name. 
+*/function name()external view returns(string memory);
+    /** @dev Returns the token collection symbol.
+     */ function symbol()external view returns(string memory); 
+/** @devReturns the Uniform Resource Identifier(URI) for `tokenId` token.   
+*/function tokenURI
+(uint256 tokenId) external view returns (string memory);
+    // ========
+=====================================================
     //                           IERC2309
-    // =============================================================
-
-    /**
-     * @dev Emitted when tokens in `fromTokenId` to `toTokenId`
-     * (inclusive) is transferred from `from` to `to`, as defined in the
+    // ==========
+===================================================
+     /**
+* @dev Emitted when tokens in `from
+            TokenId` to `toTokenId`
+     * (inclusive)
+is transferred from `from` to `to`, as defined in the
      * [ERC2309](https://eips.ethereum.org/EIPS/eip-2309) standard.
-     *
-     * See {_mintERC2309} for more details.
-     */
-    event ConsecutiveTransfer(uint256 indexed fromTokenId, uint256 toTokenId, address indexed from, address indexed to);
+     *  * See {_mintERC2309} for more details.
+     */ event Consecutive
+      Transfer(uint256 indexed from
+  TokenId, uint256 toTokenId, 
+address indexed from, address 
+indexed to);
 }
